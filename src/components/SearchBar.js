@@ -16,8 +16,8 @@ const SearchBar = (props) => {
   };
   const searchSubmitHandler = (e) => {
     e.preventDefault()
-    weatherContext.cityTermHandler(searchCity)
     setSearchCity("")
+    weatherContext.fetchWeather(searchCity)
   }
 
   return (

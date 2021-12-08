@@ -1,20 +1,18 @@
-import React, { useState, useEffect, createContext } from "react";
-
-
+import React, { useState, createContext } from "react";
 
 export const WeatherContext = createContext({
   isLoaded: false,
+  fetchWeather: (cityTerm) => {},
   weather: [],
   time: [],
   selectedWeather: {},
-  cityTermHandler(city) {},
-  onWeatherSelect(dt_txt, temp, main, humidity, pressure) {},
+  cityTermHandler: (city) => {},
+  onWeatherSelect: (dt_txt, temp, main, humidity, pressure) => {},
 });
 
 export const WeatherContextProvider = (props) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [weather, setWeather] = useState([]);
-  const [cityTerm, setCityTerm] = useState("");
   const [time, setTime] = useState([]);
   const [selectedWeather, setSelectedWeather] = useState({
     dt_txt: "",
@@ -23,10 +21,6 @@ export const WeatherContextProvider = (props) => {
     pressure: undefined,
     humidity: null,
   });
-
-  const cityTermHandler = (city) => {
-    setCityTerm(city);
-  };
 
   const onWeatherSelect = (dt_txt, temp, main, pressure, humidity) => {
     setSelectedWeather({
@@ -38,42 +32,35 @@ export const WeatherContextProvider = (props) => {
     });
   };
 
-  useEffect(() => {
-    fetch(
-      `http://api.openweathermap.org/data/2.5/forecast?q=${cityTerm}&appid=${process.env.REACT_APP_API_KEY}&units=metric`
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.cod >= 400) {
-          return;
-        }
-        setIsLoaded(true);
-        setWeather(data.list);
-        setTime(data.city);
-        setSelectedWeather({
-          dt_txt: data.list[0].dt_txt,
-          temp: data.list[0].main.temp,
-          main: data.list[0].weather[0].main,
-          pressure: data.list[0].main.pressure,
-          humidity: data.list[0].main.humidity,
-        });
-
-        setCityTerm("");
-      })
-      .catch((error) => {
-        setIsLoaded(false);
-        console.log(error);
+  const fetchWeather = async (cityTerm) => {
+    try {
+      const data = await fetch(
+        `/.netlify/functions/weatherHandler?cityTerm=${cityTerm}`
+      ).then((res) => res.json());
+      setIsLoaded(true);
+      setWeather(data.list);
+      setTime(data.city);
+      setSelectedWeather({
+        dt_txt: data.list[0].dt_txt,
+        temp: data.list[0].main.temp,
+        main: data.list[0].weather[0].main,
+        pressure: data.list[0].main.pressure,
+        humidity: data.list[0].main.humidity,
       });
-  }, [cityTerm]);
+    } catch (err) {
+      setIsLoaded(true);
+      console.log(err);
+    }
+  };
 
   return (
     <WeatherContext.Provider
       value={{
+        fetchWeather: fetchWeather,
         isLoaded: isLoaded,
         selectedWeather: selectedWeather,
         weather: weather,
         time: time,
-        cityTermHandler: cityTermHandler,
         onWeatherSelect: onWeatherSelect,
       }}
     >

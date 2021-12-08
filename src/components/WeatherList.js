@@ -6,7 +6,7 @@ import { Paper } from "@mui/material";
 
 const WeatherList = () => {
   const weatherContext = useContext(WeatherContext);
-
+  
   const renderWeather = weatherContext.weather
     .filter((reading) => reading.dt_txt.includes("18:00:00"))
     .map(({ dt, dt_txt, main, weather }, id) => (
