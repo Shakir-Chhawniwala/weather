@@ -17,7 +17,7 @@ const data = [
 
 const Chart = () => {
   return (
-    <ResponsiveContainer width="100%" height={120}>
+    <ResponsiveContainer width="100%" height={100}>
       <AreaChart
         data={data}
         margin={{ top: 10, right: 20, left: 20, bottom: 10 }}

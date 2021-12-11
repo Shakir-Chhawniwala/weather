@@ -1,6 +1,7 @@
 .App {
   height: 100vh;
-  width: 378px;
+  width: 375px;
+  max-width: 25rem;
   display: flex;
   flex-direction: column;
   align-items: center;

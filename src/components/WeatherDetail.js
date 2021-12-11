@@ -14,12 +14,12 @@ const WeatherDetail = () => {
     <Paper
       elevation={3}
       sx={{
-        m: "10px auto",
+        m: "8px auto",
         p: "2px 4px",
         display: "flex",
         alignItems: "center",
         width: "95%",
-        height: "77.5%",
+        height: "78%",
         borderRadius: "10px",
       }}
     >

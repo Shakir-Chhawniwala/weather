@@ -15,9 +15,9 @@ const SearchBar = (props) => {
     setSearchCity(e.target.value);
   };
   const searchSubmitHandler = (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    weatherContext.fetchWeather(searchCity);
     setSearchCity("")
-    weatherContext.fetchWeather(searchCity)
   }
 
   return (
@@ -30,7 +30,7 @@ const SearchBar = (props) => {
         display: "flex",
         alignItems: "center",
         width: "95%",
-        height: "7.5%",
+        height: "7%",
         borderRadius: "10px",
       }}
     >

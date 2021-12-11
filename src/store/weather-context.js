@@ -34,21 +34,22 @@ export const WeatherContextProvider = (props) => {
 
   const fetchWeather = async (cityTerm) => {
     try {
-      const data = await fetch(
+      const { list, city } = await fetch(
         `/.netlify/functions/weatherHandler?cityTerm=${cityTerm}`
       ).then((res) => res.json());
+
       setIsLoaded(true);
-      setWeather(data.list);
-      setTime(data.city);
+      setWeather(list);
+      setTime(city);
       setSelectedWeather({
-        dt_txt: data.list[0].dt_txt,
-        temp: data.list[0].main.temp,
-        main: data.list[0].weather[0].main,
-        pressure: data.list[0].main.pressure,
-        humidity: data.list[0].main.humidity,
+        dt_txt: list[0].dt_txt,
+        temp: list[0].main.temp,
+        main: list[0].weather[0].main,
+        pressure: list[0].main.pressure,
+        humidity: list[0].main.humidity,
       });
     } catch (err) {
-      setIsLoaded(true);
+      setIsLoaded(false);
       console.log(err);
     }
   };
